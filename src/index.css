@@ -1,0 +1,27 @@
+* {
+  margin:0;
+  padding:0;
+  box-sizing:border-box;
+  font-family:'Nunito', sans-serif;
+}
+
+:root{
+  --panel-header-height: 80px;
+  --body-background-color: 27, 27, 27;
+  --panel-background-color: 45, 45, 45;
+}
+
+body{
+  background-color:rgb(var(--body-background-color));
+  color:white;
+}
+
+input, button {
+  border: none;
+  outline: none;
+}
+
+button {
+  cursor: pointer;
+  background-color: none;
+}
