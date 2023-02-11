@@ -11,7 +11,7 @@ export default function<T>({
   const error = ref<string | null>(null)
   const loading = ref(false)
 
-  const baseURL = 'http://localhost:5000'
+  const baseURL = 'https://meteostanica.onrender.com'
 
   async function fetchData(additionalOptions?: Object) {
     loading.value = true
