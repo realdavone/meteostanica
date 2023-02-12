@@ -8,11 +8,12 @@ export async function getAllRecords(req, res) {
   } catch (error) {
     res.status(500).json({ success: false, message: error || 'Niečo sa pokazilo' })
   }
-
 }
 
 export async function postNewRecord(req, res) {
   const { temperature, humidity, pressure, gasResistance } = req.body
+
+  console.log(temperature, humidity, pressure, gasResistance)
 
   try {
     await Record.create({ temperature, humidity, pressure, gasResistance })
