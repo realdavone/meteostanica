@@ -22,13 +22,20 @@
     <div v-if="loading" style="text-align:center;margin-top:20px;">
       <Loader width="30px" border-width="6px" />
     </div>
-    <template v-else>
+    <div v-else class="data">
       <div v-if="error" class="error">{{ error }}</div>
       <template v-else>
+        <Transition name="slide-down">
+          <div v-if="newRecords.length" class="new-record">
+            <span>Od poslednej aktualizácie boli namerané nové hodnoty</span>
+            <button @click="newRecords = []">&times;</button>
+          </div>
+        </Transition>
+        <div style="font-size:0.75rem;padding:8px 10px;text-align:right;">Posledná aktualizácia: {{ lastUpdate }}</div>
         <div v-if="data?.records.length" class="records">
           <Record
           v-for="record in data.records"
-          :key="record.timestamp"
+          :key="record._id"
           :date="record.timestamp"
           :temperature="record.temperature"
           :humidity="record.humidity"
@@ -40,21 +47,26 @@
           <span>Nie sú k dispozícii žiadne namerané hodnoty</span>
         </div>
       </template>
-    </template>
+    </div>
   </section>
 </template>
 
 <script setup lang="ts">
-import { onBeforeMount } from 'vue'
+import socket from '../socket/main'
+
+import { onBeforeMount, ref } from 'vue'
 
 import Record from './Record.vue'
 import Loader from './Loader.vue'
 
 import useFetch from '../composables/useFetch'
 
+const lastUpdate = ref<string | null>(null)
+const newRecords = ref([])
+
 const { data, error, loading, fetchData } = useFetch<{
   records: Array<{
-    timestamp: number
+    timestamp: string
     temperature: string
     humidity: string
     pressure: string
@@ -92,6 +104,13 @@ function logout() {
 
 function refresh() {
   fetchData()
+
+  lastUpdate.value = new Intl.DateTimeFormat('sk-SK', {
+    dateStyle: 'short',
+    timeStyle: 'medium'
+  }).format(new Date())
+
+  newRecords.value = []
 }
 
 async function removeAll() {
@@ -100,11 +119,15 @@ async function removeAll() {
   if(removeAllData.value?.success === true) data.value!.records = []
 }
 
-function deletedRecord(payload: number) {
-  if(data.value) data.value.records = data.value?.records.filter(record => record.timestamp !== payload)
+function deletedRecord(datetime: string) {
+  if(data.value) data.value.records = data.value?.records.filter(record => record.timestamp !== datetime)
 }
 
-onBeforeMount(() => fetchData())
+socket.on('new-record', () => {
+  newRecords.value.push(undefined!)
+})
+
+onBeforeMount(() => refresh())
 </script>
 
 <style scoped>
@@ -123,6 +146,11 @@ header{
   flex-direction: column;
   justify-content: space-between;
   align-items: center;
+  z-index: 2;
+}
+div.data{
+  max-height: calc(100vh - var(--panel-header-height));
+  overflow: hidden;
 }
 div.upper-row{
   display: flex;
@@ -151,7 +179,7 @@ header button:hover{
 }
 div.records {
   gap: 10px;
-  padding: 20px 10px 20px 20px;
+  padding: 0px 10px 20px 20px;
   max-height: calc(100vh - var(--panel-header-height));
   overflow-y: scroll;
 }
@@ -163,6 +191,37 @@ div.records::-webkit-scrollbar-thumb {
   border:4px solid transparent;
   border-radius:10px;
   background-clip:content-box;
+}
+div.new-record{
+  background-color: darkred;
+  font-size: 0.75rem;
+  font-weight: 700;
+  text-align: center;
+  padding:5px 10px;
+  position: relative;
+  z-index: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+div.new-record span {
+  margin:0 auto;
+}
+div.new-record button {
+  background-color: transparent;
+  color: white;
+  margin-left: auto;
+  font-weight: 700;
+}
+
+.slide-down-enter-active,
+.slide-down-leave-active {
+  transition: all 0.6s ease;
+}
+
+.slide-down-enter-from,
+.slide-down-leave-to {
+  transform: translateY(-26px);
 }
 
 @media screen and (max-width: 600px) {

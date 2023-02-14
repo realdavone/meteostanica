@@ -1,4 +1,4 @@
-export default function(date: number): string {
+export default function(date: string): string {
   const now = new Date()
   const then = new Date(date)
 

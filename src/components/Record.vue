@@ -32,7 +32,7 @@ import useRelativeTime from '../composables/useRelativeTime'
 import Value from './Value.vue'
 
 const { date, temperature, pressure, humidity } = defineProps<{
-  date: number
+  date: string
   temperature: string
   pressure: string
   humidity: string
@@ -40,7 +40,7 @@ const { date, temperature, pressure, humidity } = defineProps<{
 }>()
 
 const emit = defineEmits<{
-  (e: 'deleted', id: number): void
+  (e: 'deleted', id: string): void
 }>()
 
 const { data, fetchData: removeRecord } = useFetch<{

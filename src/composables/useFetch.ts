@@ -1,5 +1,7 @@
 import { ref } from 'vue'
 
+const baseURL = import.meta.env.VITE_BASE_URL
+
 export default function<T>({
   endpoint,
   options
@@ -10,8 +12,6 @@ export default function<T>({
   const data = ref<T | null>(null)
   const error = ref<string | null>(null)
   const loading = ref(false)
-
-  const baseURL = 'https://meteostanica.onrender.com'
 
   async function fetchData(additionalOptions?: Object) {
     loading.value = true

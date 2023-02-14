@@ -1,3 +1,5 @@
+import { io } from '../io.js'
+
 import Record from '../models/record.js'
 
 export async function getAllRecords(req, res) {
@@ -13,10 +15,10 @@ export async function getAllRecords(req, res) {
 export async function postNewRecord(req, res) {
   const { temperature, humidity, pressure, gasResistance } = req.body
 
-  console.log(temperature, humidity, pressure, gasResistance)
-
   try {
     await Record.create({ temperature, humidity, pressure, gasResistance })
+
+    io.emit('new-record')
 
     res.json({ success: true, message: 'Údaj úspešne pridaný' })
   } catch (error) {

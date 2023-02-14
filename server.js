@@ -1,20 +1,25 @@
 import express from 'express'
+import http from 'http'
 import cors from 'cors'
 import mongoose from 'mongoose'
 import dotenv from 'dotenv'
-import path from 'path';
+import path from 'path'
 import { fileURLToPath } from 'url'
-
-const __filename = fileURLToPath(import.meta.url)
-const __dirname = path.dirname(__filename)
+import { init, io } from './io.js'
 
 import tempRoutes from './routes/temp.js'
 import authRoutes from './routes/auth.js'
 
+const __filename = fileURLToPath(import.meta.url)
+const __dirname = path.dirname(__filename)
+const port = process.env.PORT || 5000
+
 dotenv.config()
 
 const app = express()
-const port = process.env.PORT || 5000
+
+const server = http.createServer(app)
+init(server)
 
 mongoose.connect(process.env.DATABASE).then(() => { console.log('DB CONNECTED') })
 
@@ -30,6 +35,6 @@ app.get('/', (req, res) => {
   res.sendFile(path.resolve(__dirname, 'index.html'))
 })
 
-app.listen(port, () => {
+server.listen(port, () => {
   console.log(`Server running at ${port}`)
 })

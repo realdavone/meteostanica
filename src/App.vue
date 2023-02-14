@@ -11,7 +11,7 @@ import { ref, onBeforeMount } from 'vue'
 import Login from './components/Login.vue'
 import Panel from './components/Panel.vue'
 
-const loggedIn = ref(false)
+const loggedIn = ref<boolean>()
 
 onBeforeMount(() => {
   loggedIn.value = (localStorage.getItem('access-key') === null ? false : true)
