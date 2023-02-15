@@ -27,7 +27,7 @@
       <template v-else>
         <Transition name="slide-down">
           <div v-if="newRecords.length" class="new-record">
-            <span>Od poslednej aktualizácie boli namerané nové hodnoty</span>
+            <span>Dostupné nové merania</span>
             <button @click="newRecords = []">&times;</button>
           </div>
         </Transition>
@@ -151,6 +151,7 @@ header{
 div.data{
   max-height: calc(100vh - var(--panel-header-height));
   overflow: hidden;
+  position: relative;
 }
 div.upper-row{
   display: flex;
@@ -179,7 +180,7 @@ header button:hover{
 }
 div.records {
   gap: 10px;
-  padding: 0px 10px 20px 20px;
+  padding: 0px 10px 70px 20px;
   max-height: calc(100vh - var(--panel-header-height));
   overflow-y: scroll;
 }
@@ -193,25 +194,30 @@ div.records::-webkit-scrollbar-thumb {
   background-clip:content-box;
 }
 div.new-record{
-  background-color: darkred;
+  background-color: darkgreen;
   font-size: 0.75rem;
   font-weight: 700;
   text-align: center;
-  padding:5px 10px;
-  position: relative;
+  padding:5px 20px 5px 10px;
+  position: absolute;
   z-index: 1;
   display: flex;
   align-items: center;
   justify-content: center;
+  top: 0;
+  width:100%;
 }
 div.new-record span {
   margin:0 auto;
 }
 div.new-record button {
+  position: absolute;
   background-color: transparent;
   color: white;
   margin-left: auto;
   font-weight: 700;
+  right:10px;
+  font-size: 1.25rem;
 }
 
 .slide-down-enter-active,
