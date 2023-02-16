@@ -1,10 +1,12 @@
 <template>
   <section class="login">
     <form @submit.prevent="login">
-      <h3 style="margin-bottom:12px;line-height:1;">Prihlásenie</h3>
       <input v-model="username" placeholder="Meno" type="text" required autocomplete="username">
       <input v-model="password" placeholder="Heslo" type="password" required autocomplete="current-password">
-      <button :disabled="loading">{{ !loading ? 'Prihlásiť' : 'Prihlasovanie' }}<Loader v-show="loading" color="white"/></button>
+      <button :disabled="loading">
+        {{ !loading ? 'Prihlásiť' : 'Prihlasovanie' }}
+        <Loader v-show="loading" color="white"/>
+      </button>
     </form>
     <span class="error" :style="{ 'visibility': error ? 'visible' : 'hidden' }">{{ error }}</span>
   </section>
@@ -61,10 +63,6 @@ form{
   gap: 16px;
   width: 100%;
   max-width: 300px;
-  margin-top: 10px;
-  background-color: rgba(255,255,255,0.05);
-  padding:20px;
-  border-radius: 16px;
 }
 input {
   padding: 10px;
@@ -76,7 +74,7 @@ input:focus {
   outline: 2px solid crimson;
 }
 button {
-  padding: 10px;
+  padding: 8px;
   border-radius: 6px;
   background-color: crimson!important;
   color: white!important;
@@ -85,6 +83,7 @@ button {
   align-items: center;
   justify-content: center;
   gap: 10px;
+  font-size:0.95rem;
 }
 button:disabled {
   opacity: 0.75
