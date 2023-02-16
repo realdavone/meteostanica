@@ -4,19 +4,19 @@
       <span>{{ useRelativeTime(date) }}</span>
     </div>
     <div class="values">
-      <Value>
+      <Value title="Teplota">
         <template #icon><i class="fa-solid fa-temperature-full"></i></template>
         <template #value><span>{{ Math.floor(Number(temperature)*10) / 10 }}&deg;C</span></template>
       </Value>
-      <Value>
+      <Value title="Vlhkosť">
         <template #icon><i class="fa-solid fa-droplet"></i></template>
         <template #value><span>{{ humidity }}%</span></template>
       </Value>
-      <Value>
+      <Value title="Tlak">
         <template #icon><i class="fa-solid fa-cloud-arrow-down"></i></template>
         <template #value><span>{{ pressure }} hPa</span></template>
       </Value>
-      <Value>
+      <Value title="Odpor">
         <template #icon><i class="fa-solid fa-leaf"></i></template>
         <template #value><span>{{ gasResistance }} K&ohm;</span></template>
       </Value>
